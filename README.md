@@ -1,3 +1,5 @@
+> :warning: **Work in progress!**: currently still in development
+
 # Stacking Game
 
 The objective of this game is to construct stacks as tall as possible without
