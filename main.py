@@ -14,16 +14,20 @@ class StackingGame:
         self.game_over = False
 
         # Start the game
-        self.create_disc()
+        self.root.after(1000, self.create_disc)
         self.update_game()
 
     def create_disc(self):
         """Creates a new falling disc"""
-        radius = random.randint(30, 60)
-        x = random.randint(radius, 400 - radius)
+        width = random.randint(60, 100)
+        height = random.randint(20, 50)
+        x = random.randint(0, 400 - width)
         y = 0
-        disc = self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius, fill='red')
-        self.stack.append({"disc": disc, "radius": radius, "x": x, "y": y, "falling": True})
+        disc = self.canvas.create_oval(x, y, x + width, y + height, fill='red')
+        self.stack.append({"disc": disc, "width": width, "height": height, "x": x, "y": y, "falling": True})
+
+        # Schedule next disc
+        self.root.after(random.randint(2000, 4000), self.create_disc)
 
     def update_game(self):
         """Update the game state every frame"""
@@ -45,9 +49,9 @@ class StackingGame:
                     stack_top = 600
 
                 # If the disc touches the stack, stop falling
-                if disc_data["y"] + disc_data["radius"] >= stack_top:
+                if disc_data["y"] + disc_data["height"] >= stack_top:
                     disc_data["falling"] = False
-                    self.stack_height += disc_data["radius"] * 2
+                    self.stack_height += disc_data["height"] * 2
                     self.check_stability()
 
     def check_stability(self):
